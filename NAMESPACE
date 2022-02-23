@@ -1,0 +1,13 @@
+exportPattern("^[[:alpha:]]+")
+export(rMPo)
+export(mMPo)
+export(qMPo)
+export(pMPo)
+export(plotMPo)
+export(MPoEmle)
+export(modeMPo)
+export(dMPo)
+
+
+importFrom("stats","density","dexp","pexp","optim","constrOptim","uniroot","runif","ecdf","ks.test","integrate","ppoints")
+importFrom("graphics", "par","lines","abline","legend","plot","hist")

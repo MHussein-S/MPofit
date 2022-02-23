@@ -1,0 +1,10 @@
+Package: MPofit
+Type: Package
+Title: pdf, cdf, quantile function, rth moment, mode, generate random variates, MLE of parameters, and goodness-of-fit measurse for the MPo distribution
+Version: 1.0
+Author: Mohamed Hussein
+Maintainer: Mohamed Hussein <m.hussein@alexu.edu.eg>
+Description: Computes the probability density function, cumulative distribution function, quantile function, rth moment, Mode,  generate random numbers, maximuum liklihood estimates of parameters and goodness-of-fit measurs for the MPoE distribution
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
