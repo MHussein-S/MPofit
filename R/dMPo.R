@@ -1,4 +1,4 @@
-dMPo<-function (x,par,distr, log = FALSE)
+dMPo<-function (x,par,distr,log = FALSE)
 {
   if(!is.list(par))
     par<- as.list(par)
@@ -28,4 +28,5 @@ dMPo<-function (x,par,distr, log = FALSE)
   if (log)
     d <- log(d)
   return(d)
+
 }

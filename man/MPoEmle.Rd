@@ -15,7 +15,7 @@
 \examples{
 #{
 data<-rMPo(n=500,par=c(rate=2,a=3),distr="exp")
-MPoEmle(data,start=c(1.1,1.1))
+MPoEmle(data,start=c(a=0.1,rate=0.1))
 #}
 }
 \keyword{modified power distribution, family of distributions}

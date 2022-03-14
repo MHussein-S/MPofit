@@ -1,5 +1,4 @@
-#Empirical and theoretical: dens, CDF
-#and P-P plot
+
 plotMPo<-function (data, distr, para, histo = TRUE, breaks = "default", demp = TRUE)
 {
   if (missing(data) || !is.vector(data, mode = "numeric"))
@@ -54,10 +53,10 @@ plotMPo<-function (data, distr, para, histo = TRUE, breaks = "default", demp = T
     {
       h <- hist(data, freq = FALSE, plot = FALSE)
 
-      plot(density(data)$x, density(data)$y, lty = 1, col = "red", type = "l", xlab = "Data", main = paste("Empirical density"), ylab = "Density")
+      plot(density(data)$x, density(data)$y, lty = 1, col = "red", type = "l", xlab = "Data", main = paste("Empirical density"),font.lab=2, ylab = "Density")
 
     }
-    plot(s, obsp, main = paste("Cumulative distribution"), xlab = "Data", xlim = c(min(h$breaks), max(h$breaks)), ylab = "CDF")
+    plot(s, obsp, main = paste("Cumulative distribution"), xlab = "Data", xlim = c(min(h$breaks), max(h$breaks)),font.lab=2, ylab = "cdf")
   }
   else #distr not missing
   {
@@ -68,7 +67,7 @@ plotMPo<-function (data, distr, para, histo = TRUE, breaks = "default", demp = T
     parset<-setpar(ddistname,allpar=as.list(para))
     a<-parset$extrpar$a
     distpar<-parset$distpar
-    par(mfrow = c(2, 2))
+    par(mfrow = c(2,2))
     if (breaks == "default")
       h <- hist(data, plot = FALSE)
     else
@@ -85,50 +84,48 @@ plotMPo<-function (data, distr, para, histo = TRUE, breaks = "default", demp = T
     ymax <- ifelse(is.finite(max(yhist)), max(max(h$density), max(yhist)), max(max(h$density),max(density(data)$y)))
     if (histo)
     {
-      hist(data, freq = FALSE, xlab = "Data", ylim = c(0, ymax), breaks = h$breaks, main = paste("Empirical and theoretical dens."),ylab= "Density", xlim = c(min(h$breaks), max(h$breaks)))
-      lines(xhist,yhist , lty = 2, col = "black", type = "l", xlab = "Data", main = paste("Empirical and theoretical dens."), ylab= "Density", 	xlim = c(min(h$breaks), max(h$breaks)))
+      #ymax<-max(ymax,max(yhist),max(density(data)$y))
+      hist(data, freq = FALSE, xlab = "Data", ylim = c(0, ymax), breaks = h$breaks, main = paste("Empirical and fitted dens"),font.lab=2,ylab= "Density", xlim = c(min(h$breaks), max(h$breaks)))
+      lines(xhist,yhist , lty = 2,lwd=2, col = "black", type = "l", xlab = "Data", main = paste("Empirical and fitted dens"), font.lab=2,ylab= "Density", 	xlim = c(min(h$breaks), max(h$breaks)))
       if (demp)
       {
-       lines(stats::density(data)$x, stats::density(data)$y, lty = 1, col = "red")
-      legend("topright", bty = "n", lty = c(2,1), col = c("black", "red"), legend = c("theoretical","empirical"), bg = "white", cex = 0.7)
+       lines(density(data)$x, density(data)$y,lwd=2, lty = 1, col = "red")
+      #active
+      legend("topright", bty = "n",lwd = 2, lty = c(2,1), col = c("black", "red"), legend = c("fitted","empirical"), bg = "white", cex = 0.9)
       }
     }
     else
     {
-      plot(xhist,yhist , lty = 2, col = "black", type = "l", xlab = "Data", main = paste("Empirical and theoretical dens."), ylab= "Density", 	xlim = c(min(h$breaks), max(h$breaks)))
+      plot(xhist,yhist , lty = 2, col = "black", type = "l", xlab = "Data", main = paste("Empirical and fitted dens."),font.lab=2, ylab= "Density", 	xlim = c(min(h$breaks), max(h$breaks)))
       if (demp)
       {
-        lines(stats::density(data)$x, stats::density(data)$y, lty = 1, col = "red",xlim = c(min(h$breaks), max(h$breaks)))
-        legend("topright", bty = "n", lty = c(2,1), col = c("black", "red"), legend = c("theoretical","empirical"), bg = "white", cex = 0.7)
+        lines(stats::density(data)$x, stats::density(data)$y, lwd=2,lty = 1, col = "red",xlim = c(min(h$breaks), max(h$breaks)))
+        legend("topright", bty = "n", lwd=2,lty = c(2,1), col = c("black", "red"), legend = c("fitted","empirical"), bg = "white", cex = 0.9)
       }
     }
     # Plot of the cumulative probability distributions
     xmin <- min(h$breaks)
     xmax <- max(h$breaks)
-    plot(s, obsp, main = paste("Empirical and theoretical CDFs"),  xlab = "Data", 	ylab = "CDF", xlim = c(xmin, xmax)) #Empirical CDF
+    plot(s, obsp, main = paste("Empirical and fitted cdfs"),  xlab = "Data", 	font.lab=2,ylab = "cdf", xlim = c(xmin, xmax)) #Empirical CDF
 
     sfin <- seq(xmin, xmax, by = (xmax - xmin)/100)
     #G_fin<-do.call(pdistname, c(list(sfin), as.list(distpar)))
     #F_fin<-a^(G_fin-1)*G_fin  #Theoretical CDF
     F_fin<-pMPo(sfin,par = para,distr = distr)  #Theoretical CDF
-    lines(sfin, F_fin, lty = 1, col = "red")
-
-    #P-P plot
-  #  G_s<-do.call(pdistname, c(list(s), as.list(distpar)))
- #   F_s<-a^(G_s-1)*G_s
+    lines(sfin, F_fin,lwd=2, lty = 1, col = "red")
 
     F_s<-pMPo(s,par = para,distr = distr)  #Theoretical CDF
     if (length(F_s) != length(obsp))
       stop("problem when computing probabilities.")
-    plot(F_s, obsp, main = "P-P plot", xlab = "Theoretical probabilities", ylab = "Empirical probabilities")
-    abline(0, 1, col="red")
+    plot(F_s, obsp ,main = "P-P plot", xlab = "Theoretical probabilities",font.lab=2, ylab = "Empirical probabilities")
+    abline(0, 1, col="red",lwd=2)
     #Q-Q plot
     theoQ<-qMPo(obsp,par=para,distr=distr,lower=0,upper=1000) #Theoretical quantiles
     if (length(theoQ) != length(obsp))
       stop("problem when computing quantities.")
-    plot(theoQ, s, main = "Q-Q plot", xlab = "Theoretical quantiles", ylab = "Empirical quantiles")
+    plot(theoQ, s, main = "Q-Q plot", xlab = "Theoretical quantiles",font.lab=2, ylab = "Empirical quantiles")
 
-    abline(0, 1, col="red")
+    abline(0, 1, col="red",lwd=2)
   }
 }
 
